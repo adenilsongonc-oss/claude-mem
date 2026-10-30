@@ -1,0 +1,25 @@
+{
+  "name": "Atlas Selvagem",
+  "short_name": "Atlas",
+  "description": "Caderno de expedições: registre, mapeie e analise suas trilhas. Funciona offline e guarda os dados no seu aparelho, com backup exportável.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "id": "./",
+  "start_url": "./#/atlas",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F8F6EF",
+  "theme_color": "#F8F6EF",
+  "categories": ["sports", "travel", "lifestyle"],
+  "icons": [
+    { "src": "icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icones/icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Nova expedição", "short_name": "Nova", "url": "./#/nova", "icons": [{ "src": "icones/icone-192.png", "sizes": "192x192" }] },
+    { "name": "Folha de saída", "short_name": "Saída", "url": "./#/saida", "icons": [{ "src": "icones/icone-192.png", "sizes": "192x192" }] }
+  ]
+}

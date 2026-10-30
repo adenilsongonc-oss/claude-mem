@@ -1,0 +1,18 @@
+{
+  "name": "atlas-selvagem",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Atlas Selvagem — caderno de expedições. PWA estático, sem framework e sem etapa de build.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "node scripts/servir.mjs 5173",
+    "test": "node --test testes/calculos.teste.mjs testes/gpx.teste.mjs testes/estrutura.teste.mjs",
+    "test:e2e": "node testes/e2e.mjs",
+    "icones": "node scripts/gerar-icones.mjs",
+    "build": "node scripts/verificar.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

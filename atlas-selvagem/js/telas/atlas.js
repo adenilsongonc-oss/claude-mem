@@ -76,7 +76,7 @@ function folhasEmBranco() {
         <div class="botoes" style="margin-top:6px"><a class="botao" href="#/saida?trilha=${encodeURIComponent(f.nome)}">${icone('saida')} Folha de saída</a><a class="botao" href="#/nova?gpx=1&folha=${encodeURIComponent(f.id)}">${icone('importar')} Registrar com GPX</a></div>
       </article>`;
     })}</div>
-    <p style="margin-top:var(--e3)"><a class="botao botao--texto" href="#/arquivo#folha-em-branco">Criar folha em branco</a></p></section>`;
+    <p style="margin-top:var(--e3)"><a class="botao botao--texto" href="#/arquivo?secao=folha-em-branco">Criar folha em branco</a></p></section>`;
 }
 
 export async function render({ main, rota }) {

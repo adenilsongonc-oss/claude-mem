@@ -46,7 +46,7 @@ export const ir = (hash) => { if (location.hash === hash) rotear(); else locatio
 
 function desenharNav(nome) {
   montar($('#nav'), html`${NAV.map((n) => html`<a href="${n.href}" class="${n.nova ? 'nav__nova' : ''}" ${n.ativo.includes(nome) ? bruto('aria-current="page"') : ''}>
-      ${n.nova ? html`<span class="circulo">${icone(n.icone)}</span>` : icone(n.icone)}<span>${n.nova ? html`<span class="nav-rotulo-curto">${n.rotulo}</span>` : n.rotulo}</span></a>`)}
+      ${n.nova ? html`<span class="circulo">${icone(n.icone)}</span>` : icone(n.icone)}${n.nova ? html`<span class="rot-curto">${n.curto}</span><span class="rot-longo">${n.rotulo}</span>` : html`<span>${n.rotulo}</span>`}</a>`)}
     <div class="nav__extra">
       <a href="#/saida" ${nome === 'saida' ? bruto('aria-current="page"') : ''}>${icone('saida')} Folha de saída</a>
       <a href="#/distintivos" ${nome === 'distintivos' ? bruto('aria-current="page"') : ''}>${icone('distintivo')} Distintivos</a>
@@ -107,16 +107,17 @@ async function iniciar() {
   desenharTema();
   $('#alternar-tema').addEventListener('click', () => {
     definir('tema', temaEscuroAtivo() ? 'claro' : 'escuro');
-    aplicarTema(); desenharTema();
+    aplicarTema();
     window.dispatchEvent(new CustomEvent('atlas:tema'));
   });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (prefs().tema === 'sistema') { aplicarTema(); desenharTema(); window.dispatchEvent(new CustomEvent('atlas:tema')); } });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (prefs().tema === 'sistema') { aplicarTema(); window.dispatchEvent(new CustomEvent('atlas:tema')); } });
   document.addEventListener('click', async (e) => {
     if (e.target.closest('[data-acao="atualizar-app"]')) {
       if (protecao.sujo?.()) { avisar('Salve ou cancele a expedição em edição antes de atualizar.', 'erro'); return; }
       aplicarAtualizacao();
     }
   });
+  window.addEventListener('atlas:tema', desenharTema);
   window.addEventListener('online', desenharFaixas);
   window.addEventListener('offline', desenharFaixas);
   window.addEventListener('beforeunload', (e) => { if (protecao.sujo?.()) { e.preventDefault(); e.returnValue = ''; } });

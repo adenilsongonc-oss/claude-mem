@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Atlas Selvagem</title>
+  <rect width="512" height="512" fill="#191919"/>
+  <g fill="none" stroke="#F8F6EF" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70 330c60-34 110-26 160 0s110 30 212-6" stroke-width="10" opacity=".35"/>
+    <path d="M70 380c70-30 120-22 172 4s108 28 200-8" stroke-width="10" opacity=".22"/>
+    <path d="M96 352 214 150l62 98 46-62 94 166z" stroke-width="22"/>
+    <path d="M190 192l24-42 22 36" stroke-width="14"/>
+  </g>
+  <circle cx="370" cy="132" r="34" fill="#EAC638"/>
+</svg>
