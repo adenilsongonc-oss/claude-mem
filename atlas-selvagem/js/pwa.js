@@ -39,14 +39,20 @@ export async function registrar() {
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && Date.now() - ultima > 30 * 60000) { ultima = Date.now(); reg.update().catch(() => {}); }
     });
+    // Só recarrega quando o usuário pediu a atualização. Na primeira instalação o SW assume a página
+    // (clients.claim) sem recarregar, para não apagar nada que esteja sendo digitado.
     let recarregando = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (!recarregando) { recarregando = true; location.reload(); } });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (pediuAtualizacao && !recarregando) { recarregando = true; location.reload(); }
+    });
   } catch (e) {
     console.warn('Service worker não registrado:', e);
   }
 }
 
+let pediuAtualizacao = false;
 export function aplicarAtualizacao() {
+  pediuAtualizacao = true;
   pwa.atualizacao?.postMessage({ tipo: 'PULAR_ESPERA' });
 }
 

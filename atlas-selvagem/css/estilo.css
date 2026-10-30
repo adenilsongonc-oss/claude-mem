@@ -49,6 +49,7 @@ p { margin: 0 0 var(--e3); }
 .botao-icone:hover { border-color: var(--linha-fina); }
 .botao-icone svg { width: 20px; height: 20px; }
 
+.conteudo:focus { outline: none; }
 .conteudo { flex: 1; width: 100%; max-width: var(--largura-max); margin: 0 auto; padding: var(--e4) var(--e4) calc(var(--nav-altura) + var(--e6)); }
 
 /* Navegação: barra inferior no celular, coluna editorial no desktop (mesmo elemento) */
@@ -70,7 +71,7 @@ p { margin: 0 0 var(--e3); }
   background: var(--destaque); color: var(--sobre-destaque); border: 1px solid var(--c-tinta); margin-top: -18px;
 }
 .nav .nav__nova svg { width: 22px; height: 22px; }
-.nav__extra { display: none; }
+.nav__extra, .nav__colofao { display: none; }
 .rot-longo { display: none; }
 
 @media (min-width: 1024px) {
@@ -90,7 +91,7 @@ p { margin: 0 0 var(--e3); }
   .rot-longo { display: inline; }
   .nav__extra { display: block; margin-top: var(--e5); padding: var(--e4) var(--e5) 0; border-top: var(--borda-fina); }
   .nav__extra a { padding: 0; min-height: 36px; font-size: var(--t-s); color: var(--texto-sutil); }
-  .nav__colofao { padding: var(--e5); margin-top: auto; font: 400 var(--t-xs)/1.5 var(--f-dados); color: var(--texto-sutil); }
+  .nav__colofao { display: block; padding: var(--e5); margin-top: auto; font: 400 var(--t-xs)/1.5 var(--f-dados); color: var(--texto-sutil); }
   .conteudo { padding: var(--e5) var(--e6) var(--e7); }
 }
 
@@ -143,6 +144,8 @@ p { margin: 0 0 var(--e3); }
 .campo--unidade { position: relative; }
 .campo--unidade .unidade { position: absolute; right: 12px; bottom: 12px; font: 400 var(--t-s)/1 var(--f-dados); color: var(--texto-sutil); pointer-events: none; }
 .campo--unidade input { padding-right: 48px !important; font-family: var(--f-dados) !important; }
+.caixa-unidade { position: relative; display: block; }
+.caixa-unidade .unidade { bottom: auto; top: 50%; translate: 0 -50%; }
 .marca-fonte-dado { font: 500 0.625rem/1 var(--f-dados); text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 5px; border: var(--borda-fina); color: var(--texto-sutil); margin-left: 6px; vertical-align: 2px; }
 .marca-fonte-dado[data-f="gpx"] { border-color: var(--positivo); color: var(--positivo); }
 .marca-fonte-dado[data-f="calculado"] { border-style: dashed; }
@@ -192,7 +195,7 @@ p { margin: 0 0 var(--e3); }
 .contador-filtros { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; background: var(--c-tinta); color: var(--c-papel); font: 500 var(--t-xs)/1 var(--f-dados); }
 .botao[aria-expanded="true"] { background: var(--fundo-recuo); }
 .botao--filtrando { box-shadow: inset 0 -3px 0 var(--destaque); }
-.resultado { font-size: var(--t-s); color: var(--texto-sutil); margin-left: auto; }
+.resultado { font-size: var(--t-s); color: var(--texto-sutil); margin-left: auto; white-space: nowrap; }
 
 .painel-filtros { border: var(--borda); padding: var(--e4); background: var(--fundo-folha); display: grid; gap: var(--e4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
 .painel-filtros .faixa-num { display: flex; gap: var(--e2); }
@@ -391,7 +394,7 @@ p { margin: 0 0 var(--e3); }
 .mapa-lista { border-top: var(--borda); max-height: 640px; overflow: auto; }
 .mapa-lista button { width: 100%; text-align: left; display: grid; gap: 2px; padding: var(--e2) var(--e2); border: 0; border-bottom: var(--borda-fina); background: transparent; cursor: pointer; min-height: var(--toque); }
 .mapa-lista button[aria-pressed="true"] { background: var(--destaque); color: var(--sobre-destaque); }
-.mapa-aviso { position: absolute; inset: auto var(--e2) var(--e2) var(--e2); z-index: 500; background: var(--fundo-folha); border: var(--borda); padding: var(--e2) var(--e3); font-size: var(--t-s); }
+.mapa-aviso { position: absolute; inset: var(--e2) var(--e2) auto 56px; z-index: 500; background: var(--fundo-folha); border: var(--borda); padding: var(--e2) var(--e3); font-size: var(--t-s); }
 .leaflet-container { background: var(--fundo-recuo) !important; font-family: var(--f-ui) !important; }
 .leaflet-tile-pane { filter: var(--mapa-filtro); }
 .leaflet-bar a, .leaflet-control-attribution { background: var(--fundo-folha) !important; color: var(--texto) !important; }
@@ -443,3 +446,4 @@ dialog.visor::backdrop { background: rgb(10 10 9 / 0.88); }
   .nav, .cabecalho__acoes, .acoes, .menu-secoes, .form-acoes, .faixas { display: none !important; }
   .conteudo { padding: 0; }
 }
+.quadro__abas ~ .mapa-aviso { top: 50px; }

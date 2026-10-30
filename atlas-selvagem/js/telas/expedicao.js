@@ -69,7 +69,7 @@ export async function render({ main, rota, ir }) {
   const aria = (c) => bruto(erros[c] ? `aria-invalid="true" aria-describedby="erro-${c}"` : '');
   const sel = (nome, lista, atual, rotulos) => html`<select id="c-${nome}" name="${nome}" ${aria(nome)}><option value="">— não informado —</option>${lista.map((v) => html`<option value="${v}" ${v === atual ? bruto('selected') : ''}>${rotulos ? rotulos[v] : v}</option>`)}</select>`;
   const numCampo = (c, unidade, passo = 'any', ajuda = '') => html`<div class="campo campo--unidade"><label for="c-${c}">${ROTULOS[c]} ${marcaFonte(f.fontes[c])}</label>
-    <input id="c-${c}" name="${c}" type="number" inputmode="decimal" step="${passo}" min="${c.startsWith('altitude') ? -500 : 0}" value="${valorCampo(c)}" ${aria(c)}><span class="unidade">${unidade}</span>${ajuda ? html`<span class="ajuda">${ajuda}</span>` : ''}${erroDe(c)}</div>`;
+    <span class="caixa-unidade"><input id="c-${c}" name="${c}" type="number" inputmode="decimal" step="${passo}" min="${c.startsWith('altitude') ? -500 : 0}" value="${valorCampo(c)}" ${aria(c)}><span class="unidade">${unidade}</span></span>${ajuda ? html`<span class="ajuda">${ajuda}</span>` : ''}${erroDe(c)}</div>`;
   const durCampo = (c, ajuda) => html`<div class="campo"><label for="c-${c}">${ROTULOS[c]} ${marcaFonte(f.fontes[c])}</label>
     <input id="c-${c}" name="${c}" data-dur type="text" inputmode="numeric" placeholder="h:mm" value="${textoDur[c]}" ${aria(c)} style="font-family:var(--f-dados)"><span class="ajuda">${ajuda}</span>${erroDe(c)}</div>`;
 

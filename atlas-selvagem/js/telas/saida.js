@@ -27,7 +27,6 @@ export async function render({ main, rota }) {
   if (rota.query.get('trilha')) d.trilha = rota.query.get('trilha');
   const marcados = new Set(await lerMeta('checklist', []));
   const total = CHECKLIST.reduce((s, g) => s + g.itens.length, 0);
-  let espera;
 
   const campo = (k, rotulo, tipo = 'text', extra = '') => html`<div class="campo"><label for="s-${k}">${rotulo}</label><input id="s-${k}" name="${k}" type="${tipo}" value="${d[k]}" ${bruto(extra)}></div>`;
 
@@ -65,8 +64,7 @@ export async function render({ main, rota }) {
       d[e.target.name] = e.target.value;
       if (e.target.name === 'companhia') { gravarMeta('rascunhoSaida', d); desenhar(); $('#s-companhia').focus(); return; }
       atualizarMensagem();
-      clearTimeout(espera);
-      espera = setTimeout(() => gravarMeta('rascunhoSaida', d).catch(() => {}), 400);
+      gravarMeta('rascunhoSaida', { ...d }).catch((err) => avisar(err.message, 'erro'));
     });
     $('#copiar').addEventListener('click', async () => { const ok = await copiarTexto(mensagem(d)); avisar(ok ? 'Mensagem copiada.' : 'Não foi possível copiar.', ok ? 'info' : 'erro'); });
     $('#checklist').addEventListener('change', (e) => {
@@ -78,5 +76,5 @@ export async function render({ main, rota }) {
   }
 
   desenhar();
-  return () => { clearTimeout(espera); gravarMeta('rascunhoSaida', d).catch(() => {}); };
+  return () => { gravarMeta('rascunhoSaida', d).catch(() => {}); };
 }
