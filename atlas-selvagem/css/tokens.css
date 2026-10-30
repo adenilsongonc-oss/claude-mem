@@ -64,7 +64,7 @@
 
 /* Tema escuro: mesa de cartografia numa expedição noturna */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-tema="claro"]) {
+  :root:not([data-tema="claro"]):not([data-theme="light"]) {
     --fundo: #141412;
     --fundo-folha: #1C1C19;
     --fundo-recuo: #232320;
@@ -84,7 +84,7 @@
     color-scheme: dark;
   }
 }
-:root[data-tema="escuro"] {
+:root[data-tema="escuro"], :root[data-theme="dark"]:not([data-tema="claro"]) {
   --fundo: #141412;
   --fundo-folha: #1C1C19;
   --fundo-recuo: #232320;
