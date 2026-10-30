@@ -1,0 +1,105 @@
+/* Atlas Selvagem — tokens visuais. Único lugar com valores de cor e família tipográfica. */
+
+@font-face { font-family: 'Cinzel Decorative'; src: url('../fontes/cinzel-decorative-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Cinzel Decorative'; src: url('../fontes/cinzel-decorative-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'IM Fell English'; src: url('../fontes/im-fell-english-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IM Fell English'; src: url('../fontes/im-fell-english-latin-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fontes/inter-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fontes/inter-latin-500-normal.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fontes/inter-latin-600-normal.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('../fontes/inter-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('../fontes/ibm-plex-mono-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('../fontes/ibm-plex-mono-latin-500-normal.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+
+:root {
+  /* Paleta base (definida no briefing) */
+  --c-papel: #F8F6EF;
+  --c-tinta: #191919;
+  --c-amarelo: #EAC638;
+  --c-musgo: #59634A;
+  --c-terracota: #B85B45;
+  --c-cinza: #89867D;
+  --c-linhas: #292929;
+
+  /* Papéis semânticos — tema claro */
+  --fundo: var(--c-papel);
+  --fundo-folha: #FBFAF5;
+  --fundo-recuo: #EFECE2;
+  --texto: var(--c-tinta);
+  --texto-sutil: #66635B;        /* cinza cartográfico escurecido: 5,5:1 sobre o papel */
+  --linha: var(--c-linhas);
+  --linha-fina: #CFCBBF;
+  --linha-deco: #DDD8CA;          /* curvas de nível decorativas */
+  --destaque: var(--c-amarelo);
+  --sobre-destaque: var(--c-tinta);
+  --positivo: var(--c-musgo);
+  --atencao: var(--c-terracota);  /* traços e símbolos */
+  --atencao-texto: #9A4734;       /* terracota escurecida para texto: 5,8:1 */
+  --percurso: var(--c-tinta);
+  --percurso-ativo: var(--c-amarelo);
+  --mapa-filtro: none;
+  --foco: #1F5FBF;
+
+  --f-marca: 'Cinzel Decorative', 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --f-editorial: 'IM Fell English', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --f-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --f-dados: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --t-xs: 0.6875rem;  /* 11 */
+  --t-s: 0.8125rem;   /* 13 */
+  --t-m: 0.9375rem;   /* 15 */
+  --t-l: 1.25rem;
+  --t-xl: 1.75rem;
+  --t-xxl: 2.5rem;
+
+  --e1: 4px; --e2: 8px; --e3: 12px; --e4: 16px; --e5: 24px; --e6: 32px; --e7: 48px;
+  --borda: 1px solid var(--linha);
+  --borda-fina: 1px solid var(--linha-fina);
+  --toque: 44px;
+  --nav-altura: 64px;
+  --largura-max: 1240px;
+  --dur: 180ms;
+  color-scheme: light;
+}
+
+/* Tema escuro: mesa de cartografia numa expedição noturna */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --fundo: #141412;
+    --fundo-folha: #1C1C19;
+    --fundo-recuo: #232320;
+    --texto: #EDE6D3;
+    --texto-sutil: #A39F93;
+    --linha: #5A5852;
+    --linha-fina: #3A3935;
+    --linha-deco: #2C2B27;
+    --destaque: var(--c-amarelo);
+    --sobre-destaque: #141412;
+    --positivo: #A3B08A;
+    --atencao: #D9785F;
+    --atencao-texto: #E08A72;
+    --percurso: #EDE6D3;
+    --mapa-filtro: brightness(0.82) contrast(1.05) saturate(0.7);
+    --foco: #8DB4FF;
+    color-scheme: dark;
+  }
+}
+:root[data-tema="escuro"] {
+  --fundo: #141412;
+  --fundo-folha: #1C1C19;
+  --fundo-recuo: #232320;
+  --texto: #EDE6D3;
+  --texto-sutil: #A39F93;
+  --linha: #5A5852;
+  --linha-fina: #3A3935;
+  --linha-deco: #2C2B27;
+  --destaque: var(--c-amarelo);
+  --sobre-destaque: #141412;
+  --positivo: #A3B08A;
+  --atencao: #D9785F;
+  --atencao-texto: #E08A72;
+  --percurso: #EDE6D3;
+  --mapa-filtro: brightness(0.82) contrast(1.05) saturate(0.7);
+  --foco: #8DB4FF;
+  color-scheme: dark;
+}
