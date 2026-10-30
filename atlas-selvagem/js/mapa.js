@@ -37,12 +37,16 @@ export async function criarMapa(el, { aoFalharTiles } = {}) {
   const Lf = await carregarLeaflet();
   const camada = CAMADAS[prefs().camada] || CAMADAS.opentopomap;
   const mapa = Lf.map(el, { zoomControl: true, attributionControl: true, scrollWheelZoom: false, tap: true });
+  // O Leaflet precisa de centro e zoom antes de receber camadas; quem chama reenquadra depois.
+  mapa.setView([-15.8, -47.9], 4);
   mapa.attributionControl.setPrefix(false);
   let falhas = 0;
   const tiles = Lf.tileLayer(camada.url, { ...camada.opcoes, crossOrigin: true });
   tiles.on('tileerror', () => { falhas++; if (falhas === 3) aoFalharTiles?.(); });
   tiles.on('tileload', () => { falhas = 0; });
   tiles.addTo(mapa);
+  // Safari às vezes mede o contêiner antes do layout final; recalcula o tamanho no próximo quadro.
+  requestAnimationFrame(() => mapa.invalidateSize());
   mapa.on('focus', () => mapa.scrollWheelZoom.enable());
   mapa.on('blur', () => mapa.scrollWheelZoom.disable());
   return { mapa, L: Lf, destruir: () => mapa.remove() };

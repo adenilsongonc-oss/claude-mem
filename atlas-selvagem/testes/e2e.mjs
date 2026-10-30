@@ -92,6 +92,8 @@ await passo('nova expedição com GPX: revisão e salvamento', async () => {
   assert.match(await p.locator('.trilha-cab__linha').first().innerText(), /Nº 02/);
   assert.match(await p.locator('.resumo').innerText(), /2,00 km/);
   assert.equal(await p.locator('.perfil svg').count(), 1);
+  await p.waitForSelector('#mapa-trilha .leaflet-overlay-pane path', { state: 'attached', timeout: 8000 });
+  assert.equal(await p.locator('#mapa-trilha .sem-mapa').count(), 0);
   assert.equal(await p.locator('.galeria img').count(), 1);
   assert.match(await p.locator('#s-pontos').innerText(), /Bica/);
 });
@@ -265,6 +267,8 @@ await passo('offline: app abre, mostra registros e salva diário sem rede', asyn
 
 await passo('sem rolagem horizontal em 360 px', async () => {
   await p.setViewportSize({ width: 360, height: 780 });
+  await ir('mapa');
+  await p.waitForSelector('#mapa-explorar .leaflet-overlay-pane path', { state: 'attached', timeout: 8000 });
   for (const r of ['atlas', 'lista', 'estatisticas', 'mapa', 'nova', 'arquivo', 'saida', 'distintivos']) {
     await ir(r);
     await p.waitForTimeout(250);
