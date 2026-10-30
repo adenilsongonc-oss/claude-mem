@@ -36,7 +36,7 @@ export async function render({ main, rota }) {
       <section aria-labelledby="h-backup"><h2 id="h-backup">Backup e restauração</h2>
         <dl class="ficha"><dt>Criadas aqui</dt><dd class="dado">${nLocais}</dd><dt>Da base, editadas aqui</dt><dd class="dado">${nEditadas}</dd><dt>Fotos</dt><dd class="dado">${nFotos}</dd><dt>Último backup</dt><dd class="dado">${ultimoBackup ? F.data(ultimoBackup.slice(0, 10)) : 'nunca'}</dd></dl>
         <div class="botoes"><button class="botao botao--primario" type="button" id="exportar-backup">${icone('exportar')} Exportar backup completo</button>
-          <label class="botao" for="arquivo-backup">${icone('importar')} Restaurar backup…</label><input id="arquivo-backup" type="file" accept=".json,application/json" class="so-leitor"></div>
+          <label class="botao" for="arquivo-backup">${icone('importar')} Restaurar backup…</label><input id="arquivo-backup" type="file" class="so-leitor"></div>
         <p class="nota-dado">O backup é um arquivo JSON com registros, diário, pontos, alertas, trajetos GPX e fotos (embutidas em base64). Os registros do arquivo base do projeto não entram porque já estão no código. A restauração valida o arquivo e mostra os conflitos antes de gravar.</p>
       </section>
       <section aria-labelledby="h-exportar"><h2 id="h-exportar">Exportar dados</h2>

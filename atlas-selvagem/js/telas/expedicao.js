@@ -90,8 +90,9 @@ export async function render({ main, rota, ir }) {
     if (!gpx) {
       return html`<div class="gpx-zona" id="gpx-zona"><strong>Arquivo GPX</strong>
         <p class="sutil" style="margin:0;font-size:var(--t-s)">Importe a gravação do relógio, GPS ou aplicativo (Wikiloc, Strava, Garmin…). Distância, desnível, tempos e traçado são calculados do arquivo; você revisa antes de salvar.</p>
-        <div class="botoes"><label class="botao botao--primario" for="gpx-arquivo">${icone('importar')} Escolher arquivo .gpx</label><input id="gpx-arquivo" type="file" accept=".gpx,application/gpx+xml,application/xml,text/xml" class="so-leitor"><button class="botao" type="button" id="gpx-exemplo">Usar GPX de exemplo</button></div>
+        <div class="botoes"><label class="botao botao--primario" for="gpx-arquivo">${icone('importar')} Escolher arquivo .gpx</label><input id="gpx-arquivo" type="file" class="so-leitor"><button class="botao" type="button" id="gpx-exemplo">Usar GPX de exemplo</button></div>
         ${f.temTrajeto ? html`<p class="nota-dado">Este registro já tem um trajeto GPX. Importar outro substituirá o trajeto e os valores calculados.</p>` : ''}
+        <p class="ajuda" style="margin:0">No iPhone, procure o arquivo em Arquivos → Transferências (ou onde o Wikiloc salvou). O conteúdo é conferido depois de escolhido.</p>
         <div id="gpx-erro" role="alert"></div></div>`;
     }
     const L = gpx.leitura;
