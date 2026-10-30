@@ -1,0 +1,223 @@
+{
+  "_leia": "Ícones em viewBox 48x48 (distintivos) e 16x16 (pontos de interesse). Camadas: linha (traço 1,6), trac (tracejado 3 2,5), forte (traço 2,6), cheio (preenchido), acento (cor de sobreimpressão, traço 2). Texto opcional em (tx, ty) com corpo ts, contornado com a cor de fundo. Em aberto: tudo na cor 'sutil'. Conquistado: tinta + acento vermelho + prisma de controle no canto.",
+  "distintivos": {
+    "31": {
+      "nome": "Primeira folha",
+      "linha": "M10 6 H31 L38 13 V42 H10 Z M31 6 V13 H38",
+      "trac": null,
+      "forte": null,
+      "cheio": null,
+      "acento": "M18 19 L30 25.5 L18 32 Z",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "32": {
+      "nome": "Curva de 5 km",
+      "linha": "M12 25 A12 8 0 1 0 36 25 A12 8 0 1 0 12 25 M7 25 A17 11.5 0 1 0 41 25 A17 11.5 0 1 0 7 25 M2 25 A22 15 0 1 0 46 25 A22 15 0 1 0 2 25",
+      "trac": null,
+      "forte": "M17 25 A7 4.5 0 1 0 31 25 A7 4.5 0 1 0 17 25",
+      "cheio": null,
+      "acento": "M21.8 25 A2.2 2.2 0 1 0 26.2 25 A2.2 2.2 0 1 0 21.8 25",
+      "txt": "5",
+      "tx": 24,
+      "ty": 33.0,
+      "ts": 9
+    },
+    "33": {
+      "nome": "Curva de 10 km",
+      "linha": "M17 25 A7 4.5 0 1 0 31 25 A7 4.5 0 1 0 17 25 M7 25 A17 11.5 0 1 0 41 25 A17 11.5 0 1 0 7 25 M2 25 A22 15 0 1 0 46 25 A22 15 0 1 0 2 25",
+      "trac": null,
+      "forte": "M12 25 A12 8 0 1 0 36 25 A12 8 0 1 0 12 25",
+      "cheio": null,
+      "acento": "M21.8 25 A2.2 2.2 0 1 0 26.2 25 A2.2 2.2 0 1 0 21.8 25",
+      "txt": "10",
+      "tx": 24,
+      "ty": 36.5,
+      "ts": 9
+    },
+    "34": {
+      "nome": "Curva mestra 15 km",
+      "linha": "M17 25 A7 4.5 0 1 0 31 25 A7 4.5 0 1 0 17 25 M12 25 A12 8 0 1 0 36 25 A12 8 0 1 0 12 25 M2 25 A22 15 0 1 0 46 25 A22 15 0 1 0 2 25",
+      "trac": null,
+      "forte": "M7 25 A17 11.5 0 1 0 41 25 A17 11.5 0 1 0 7 25",
+      "cheio": null,
+      "acento": "M21.8 25 A2.2 2.2 0 1 0 26.2 25 A2.2 2.2 0 1 0 21.8 25",
+      "txt": "15",
+      "tx": 24,
+      "ty": 40.0,
+      "ts": 9
+    },
+    "35": {
+      "nome": "Curva de 20 km",
+      "linha": "M17 25 A7 4.5 0 1 0 31 25 A7 4.5 0 1 0 17 25 M12 25 A12 8 0 1 0 36 25 A12 8 0 1 0 12 25 M7 25 A17 11.5 0 1 0 41 25 A17 11.5 0 1 0 7 25",
+      "trac": null,
+      "forte": "M2 25 A22 15 0 1 0 46 25 A22 15 0 1 0 2 25",
+      "cheio": null,
+      "acento": "M21.8 25 A2.2 2.2 0 1 0 26.2 25 A2.2 2.2 0 1 0 21.8 25",
+      "txt": "20",
+      "tx": 24,
+      "ty": 43.5,
+      "ts": 9
+    },
+    "36": {
+      "nome": "Meta cumprida",
+      "linha": "M5 25 A19 19 0 1 0 43 25 A19 19 0 1 0 5 25",
+      "trac": null,
+      "forte": "M10.5 25 A13.5 13.5 0 1 0 37.5 25 A13.5 13.5 0 1 0 10.5 25",
+      "cheio": null,
+      "acento": "M17 25.5 L22 30.5 L31.5 19.5",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "37": {
+      "nome": "Cume dos mil",
+      "linha": "M4 45 Q24 33 44 45",
+      "trac": null,
+      "forte": "M24 6 L35 24 H13 Z",
+      "cheio": "M21.8 18 A2.2 2.2 0 1 0 26.2 18 A2.2 2.2 0 1 0 21.8 18",
+      "acento": null,
+      "txt": "1.000",
+      "tx": 24,
+      "ty": 35,
+      "ts": 9
+    },
+    "38": {
+      "nome": "Subida firme",
+      "linha": "M14 44 Q26 34 30 8 M19 45 Q31 35 35 9 M24 46 Q36 36 40 10 M29 47 Q41 37 45 11",
+      "trac": null,
+      "forte": null,
+      "cheio": null,
+      "acento": "M8 34 V10 M3.5 14.5 L8 10 L12.5 14.5",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "41": {
+      "nome": "Mil metros de subida",
+      "linha": "M4 40 L11 32 L15 36 L22 24 L26 28 L33 15 L37 19 L41 10",
+      "trac": null,
+      "forte": "M4 44 H40",
+      "cheio": null,
+      "acento": "M45 9 V44 M42 9 H46 M42 44 H46",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "42": {
+      "nome": "Everest no bolso",
+      "linha": null,
+      "trac": null,
+      "forte": "M3 43 L17 19 L23 26 L32 9 L45 43 Z",
+      "cheio": "M27.5 17.5 L32 9 L36.6 20 L33.5 18 L31 21 Z",
+      "acento": "M32 9 V2 M32 2.6 L39 5 L32 7.4",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "43": {
+      "nome": "Cem quilômetros",
+      "linha": "M4 21 V26 M24 21 V26 M44 21 V26",
+      "trac": null,
+      "forte": "M4 26 H44 V32 H4 Z",
+      "cheio": "M4 26 H12 V32 H4 Z M20 26 H28 V32 H20 Z M36 26 H44 V32 H36 Z",
+      "acento": null,
+      "txt": "100 KM",
+      "tx": 24,
+      "ty": 43,
+      "ts": 9
+    },
+    "44": {
+      "nome": "Cinco folhas",
+      "linha": "M6 32 V6 H28 M9 35 V9 H31 M12 38 V12 H34 M15 41 V15 H37",
+      "trac": null,
+      "forte": "M18 18 H40 V44 H18 Z",
+      "cheio": null,
+      "acento": "M24 25 L33 31 L24 37 Z",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "45": {
+      "nome": "Mês cheio",
+      "linha": "M15 5 V13 M33 5 V13 M18 18 V42 M30 18 V42 M6 30 H42",
+      "trac": null,
+      "forte": "M6 10 H42 V42 H6 Z M6 18 H42",
+      "cheio": null,
+      "acento": "M9 24 A3 3 0 1 0 15 24 A3 3 0 1 0 9 24 M21 24 A3 3 0 1 0 27 24 A3 3 0 1 0 21 24 M21 36 A3 3 0 1 0 27 36 A3 3 0 1 0 21 36 M33 36 A3 3 0 1 0 39 36 A3 3 0 1 0 33 36",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    },
+    "46": {
+      "nome": "Dia longo",
+      "linha": "M4 38 H44 M8 41 V44 M16 41 V44 M24 41 V44 M32 41 V44 M40 41 V44",
+      "trac": "M8 38 A16 16 0 0 1 40 38",
+      "forte": null,
+      "cheio": null,
+      "acento": "M19.5 22 A4.5 4.5 0 1 0 28.5 22 A4.5 4.5 0 1 0 19.5 22",
+      "txt": "5 H",
+      "tx": 24,
+      "ty": 33,
+      "ts": 8
+    },
+    "47": {
+      "nome": "Três metas cumpridas",
+      "linha": "M13.2 29.9 L20.8 17.1 M27.2 17.1 L34.8 29.9",
+      "trac": null,
+      "forte": "M4 35 A6 6 0 1 0 16 35 A6 6 0 1 0 4 35 M18 12 A6 6 0 1 0 30 12 A6 6 0 1 0 18 12 M32 35 A6 6 0 1 0 44 35 A6 6 0 1 0 32 35",
+      "cheio": null,
+      "acento": "M7.2 35 L9.4 37.2 L12.8 33 M21.2 12 L23.4 14.2 L26.8 10 M35.2 35 L37.4 37.2 L40.8 33",
+      "txt": "",
+      "tx": 24,
+      "ty": 24,
+      "ts": 9
+    }
+  },
+  "pontosDeInteresse": {
+    "mirante": {
+      "t": "Mirante",
+      "d": "M8 13 L3.5 4 M8 13 L12.5 4 M8 13 L8 3",
+      "acento": "M7 13 L9 13",
+      "cor": "ink"
+    },
+    "agua": {
+      "t": "Água",
+      "d": "M2.5 6.5 Q5 4.5 8 6.5 T13.5 6.5 M2.5 10.5 Q5 8.5 8 10.5 T13.5 10.5",
+      "acento": null,
+      "cor": "ink"
+    },
+    "cume": {
+      "t": "Cume",
+      "d": "M8 3 L13.5 13 H2.5 Z",
+      "acento": "M8 9.4 L8 9.6",
+      "cor": "ink"
+    },
+    "bifurcacao": {
+      "t": "Bifurcação",
+      "d": "M8 14 V8 M8 8 L3.5 3 M8 8 L12.5 3",
+      "acento": null,
+      "cor": "ink"
+    },
+    "acampamento": {
+      "t": "Acampamento",
+      "d": "M2.5 13.5 H13.5 M3.8 13.5 L8 3.5 L12.2 13.5",
+      "acento": "M8 13.5 L8 9.5",
+      "cor": "ink"
+    },
+    "perigo": {
+      "t": "Perigo",
+      "d": "M8 2.5 L14 13.5 H2 Z",
+      "acento": "M8 6.5 V9.5 M8 11.4 V11.6",
+      "cor": "over"
+    }
+  }
+}
