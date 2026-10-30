@@ -232,6 +232,26 @@ await passo('folha de saída monta a mensagem e salva o checklist', async () => 
   assert.equal(await p.inputValue('#s-para'), 'Ana');
 });
 
+await passo('folha de saída preenchida por GPX (trilha, partida, volta e coordenadas)', async () => {
+  const comWpt = (await readFile(arqGPX, 'utf8')).replace('<trk>', '<wpt lat="-22.900100" lon="-46.800000"><name>Portão do parque</name></wpt><trk>');
+  const arq = join(tmp, 'wikiloc.gpx');
+  await writeFile(arq, comWpt);
+  await ir('saida');
+  await p.fill('#s-saida', '06:00');
+  await p.setInputFiles('#s-gpx', arq);
+  await p.waitForSelector('#gpx-limpar');
+  assert.equal(await p.inputValue('#s-trilha'), 'Teste');
+  assert.equal(await p.inputValue('#s-partida'), 'Portão do parque');
+  assert.equal(await p.inputValue('#s-volta'), '06:45'); // 40 min do autor, arredondado
+  assert.match(await p.locator('#mensagem').innerText(), /Coordenadas da partida: -22\.90000, -46\.80000/);
+  await p.fill('#s-saida', '07:00');
+  await p.locator('#s-saida').dispatchEvent('change');
+  assert.equal(await p.inputValue('#s-volta'), '07:45');
+  await p.reload();
+  await p.waitForSelector('#gpx-limpar');
+  assert.equal(await p.inputValue('#s-volta'), '07:45');
+});
+
 await passo('manifesto e service worker ativos', async () => {
   await ir('atlas');
   const r = await p.evaluate(async () => {
