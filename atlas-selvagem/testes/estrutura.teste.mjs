@@ -2,6 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { verificar } from '../scripts/verificar.mjs';
 import { mensagem, voltaEstimada, resumoGPX } from '../js/telas/saida.js';
+import { VERSAO_APP } from '../js/versao.js';
+import { readFile } from 'node:fs/promises';
 
 test('pré-cache do service worker, imports, JSON e manifesto consistentes', async () => {
   const { problemas } = await verificar();
@@ -29,4 +31,9 @@ test('resumo do GPX usa o waypoint mais próximo da partida e entra na mensagem'
   assert.equal(resumoGPX({ ...L, waypoints: [] }, 'x').partida, null);
   const m = mensagem({ para: 'Ana', trilha: g.nome, partida: g.partida, data: '2026-11-14', saida: '06:00', volta: '11:00', prazo: '2', gpx: g });
   assert.match(m, /Percurso: 15,2 km, \+365 m de subida, ponto mais alto 1\.086 m, circular\. Coordenadas da partida: -22\.90000, -46\.80000 \(https:\/\/maps\.google\.com\/\?q=-22\.90000,-46\.80000\)\./);
+});
+
+test('versão exibida no app é a mesma do service worker', async () => {
+  const sw = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
+  assert.equal(sw.match(/const VERSAO = '([^']+)'/)[1], VERSAO_APP);
 });

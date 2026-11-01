@@ -7,7 +7,8 @@ import { gerarBackup, analisarBackup, restaurar, gerarCSV, baixar } from '../bac
 import { estimativa, pedirPersistencia, todos, lerMeta, gravarMeta } from '../armazenamento.js';
 import { prefs, definir, aplicarTema } from '../preferencias.js';
 import { CAMADAS } from '../mapa.js';
-import { pwa, assinarPWA, instalar, plataforma, modoStandalone } from '../pwa.js';
+import { pwa, assinarPWA, instalar, plataforma, modoStandalone, procurarAtualizacao, aplicarAtualizacao } from '../pwa.js';
+import { VERSAO_APP } from '../versao.js';
 
 export async function render({ main, rota }) {
   let est = await estimativa();
@@ -53,6 +54,8 @@ export async function render({ main, rota }) {
       </section>
       <section aria-labelledby="h-instalar"><h2 id="h-instalar">Instalar e usar offline</h2>
         <div id="bloco-instalar">${blocoInstalar()}</div>
+        <p>Versão em uso neste aparelho: <strong class="dado">${VERSAO_APP}</strong></p>
+        <div class="botoes"><button class="botao" type="button" id="procurar-atualizacao">Procurar atualização</button></div>
         <p>${pwa.suportaSW ? (pwa.offlinePronto ? html`<span class="positivo">Pronto para uso offline:</span> o aplicativo está guardado neste aparelho.` : 'Preparando o uso offline… recarregue a página uma vez com conexão.') : 'Este navegador não oferece service worker; o uso offline não está disponível.'}</p>
         <p class="nota-dado">Sem conexão funcionam: atlas, lista, detalhes, diário, fotos, estatísticas, cadastro e edição. O mapa de fundo depende de internet e não é guardado offline (por respeito às regras de uso dos servidores de mapas).</p>
       </section>
@@ -118,6 +121,15 @@ export async function render({ main, rota }) {
     $('#exportar-csv').addEventListener('click', () => baixar(gerarCSV(estado.trilhas, estado.anotacoes), `atlas-selvagem-${F.hojeISO()}.csv`, 'text/csv;charset=utf-8'));
     $('#persistir')?.addEventListener('click', async () => { const ok = await pedirPersistencia(); avisar(ok ? 'Persistência concedida.' : 'O navegador recusou a persistência (comum antes de instalar o app).', ok ? 'info' : 'erro'); est = await estimativa(); desenhar(); });
     $('#restaurar-ocultas')?.addEventListener('click', async () => { await restaurarOcultas(); avisar('Registros da base visíveis de novo.'); desenhar(); });
+    $('#procurar-atualizacao')?.addEventListener('click', async (e) => {
+      const b = e.currentTarget; b.disabled = true; b.textContent = 'Procurando…';
+      const r = await procurarAtualizacao();
+      b.disabled = false; b.textContent = 'Procurar atualização';
+      if (r === 'nova') {
+        if (await confirmar('Nova versão disponível', 'Atualizar agora? O app recarrega; seus dados ficam guardados.', { confirmar: 'Atualizar' })) aplicarAtualizacao();
+      } else if (r === 'atual') avisar(`Você já está na versão mais recente publicada (${VERSAO_APP}).`);
+      else avisar('Não foi possível procurar agora. Confira a conexão e tente de novo.', 'erro');
+    });
     $('#instalar')?.addEventListener('click', async () => { const r = await instalar(); if (r === 'accepted') avisar('Instalação iniciada.'); });
     $('#pref-tema').addEventListener('change', (e) => { definir('tema', e.target.value); aplicarTema(); window.dispatchEvent(new CustomEvent('atlas:tema')); });
     $('#pref-camada').addEventListener('change', (e) => { definir('camada', e.target.value); avisar('Mapa de fundo alterado.'); });

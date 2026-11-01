@@ -4,7 +4,7 @@
 // Não guardamos tiles de mapa nem qualquer resposta de outra origem; dados pessoais ficam só no IndexedDB.
 // Ao mudar qualquer arquivo do app, incremente VERSAO: a nova versão espera até o usuário aceitar atualizar.
 
-const VERSAO = 'v5';
+const VERSAO = 'v6';
 const CACHE = `atlas-selvagem-${VERSAO}`;
 
 const ARQUIVOS = [
@@ -28,6 +28,7 @@ const ARQUIVOS = [
   'js/preferencias.js',
   'js/pwa.js',
   'js/ui.js',
+  'js/versao.js',
   'js/telas/arquivo.js',
   'js/telas/atlas.js',
   'js/telas/detalhe.js',

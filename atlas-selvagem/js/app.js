@@ -6,6 +6,7 @@ import { marcaSVG, carregarIcones } from './desenho.js';
 import { prefs, definir, aplicarTema, temaEscuroAtivo } from './preferencias.js';
 import { registrar, assinarPWA, pwa, aplicarAtualizacao } from './pwa.js';
 import { pedirPersistencia } from './armazenamento.js';
+import { VERSAO_APP } from './versao.js';
 
 const TELAS = {
   atlas: () => import('./telas/atlas.js'),
@@ -51,7 +52,7 @@ function desenharNav(nome) {
     <div class="nav__extra">
       <a href="#/distintivos" ${nome === 'distintivos' ? bruto('aria-current="page"') : ''}>${icone('distintivo')} Distintivos</a>
     </div>
-    <p class="nav__colofao">Vol. 01 · ${estado.trilhas.length} ${estado.trilhas.length === 1 ? 'folha' : 'folhas'}<br>Dados neste aparelho</p>`);
+    <p class="nav__colofao">Vol. 01 · ${estado.trilhas.length} ${estado.trilhas.length === 1 ? 'folha' : 'folhas'}<br>Dados neste aparelho<br>Versão ${VERSAO_APP}</p>`);
 }
 
 function desenharTema() {

@@ -34,11 +34,13 @@ export async function registrar() {
     observar(reg.installing);
     reg.addEventListener('updatefound', () => observar(reg.installing));
     if (reg.active) { pwa.offlinePronto = true; avisar(); }
-    // Procura nova versão ao voltar para o app (no máximo a cada 30 min).
-    let ultima = Date.now();
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && Date.now() - ultima > 30 * 60000) { ultima = Date.now(); reg.update().catch(() => {}); }
-    });
+    registro = reg;
+    // Procura nova versão ao abrir e ao voltar para o app (no iPhone o app instalado volta
+    // do segundo plano sem recarregar, então só a abertura não basta). No máximo 1 vez por minuto.
+    let ultima = 0;
+    const checar = () => { if (navigator.onLine && Date.now() - ultima > 60000) { ultima = Date.now(); reg.update().catch(() => {}); } };
+    checar();
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checar(); });
     // Só recarrega quando o usuário pediu a atualização. Na primeira instalação o SW assume a página
     // (clients.claim) sem recarregar, para não apagar nada que esteja sendo digitado.
     let recarregando = false;
@@ -51,6 +53,19 @@ export async function registrar() {
 }
 
 let pediuAtualizacao = false;
+let registro = null;
+
+// Busca uma versão nova agora. Retorna 'nova' (há atualização esperando), 'atual' ou 'erro'.
+export async function procurarAtualizacao() {
+  if (!registro) return 'erro';
+  try {
+    await registro.update();
+    const w = registro.installing;
+    if (w) await new Promise((r) => { const f = () => { if (w.state === 'installed' || w.state === 'redundant') { w.removeEventListener('statechange', f); r(); } }; w.addEventListener('statechange', f); f(); });
+    if (registro.waiting && navigator.serviceWorker.controller) { pwa.atualizacao = registro.waiting; avisar(); return 'nova'; }
+    return 'atual';
+  } catch { return 'erro'; }
+}
 export function aplicarAtualizacao() {
   pediuAtualizacao = true;
   pwa.atualizacao?.postMessage({ tipo: 'PULAR_ESPERA' });
