@@ -23,7 +23,8 @@ const NAV = [
   { href: '#/atlas', rotulo: 'Atlas', icone: 'atlas', ativo: ['atlas', 'lista', 'trilha'] },
   { href: '#/mapa', rotulo: 'Mapa', icone: 'mapa', ativo: ['mapa'] },
   { href: '#/nova', rotulo: 'Nova expedição', curto: 'Nova', icone: 'mais', ativo: ['nova'], nova: true },
-  { href: '#/estatisticas', rotulo: 'Estatísticas', icone: 'estat', ativo: ['estatisticas'] },
+  { href: '#/saida', rotulo: 'Folha de saída', curto: 'Saída', icone: 'saida', ativo: ['saida'] },
+  { href: '#/estatisticas', rotulo: 'Estatísticas', icone: 'estat', ativo: ['estatisticas'], soDesktop: true },
   { href: '#/arquivo', rotulo: 'Arquivo', icone: 'arquivo', ativo: ['arquivo'] },
 ];
 
@@ -45,10 +46,9 @@ export function lerRota(hash = location.hash) {
 export const ir = (hash) => { if (location.hash === hash) rotear(); else location.hash = hash; };
 
 function desenharNav(nome) {
-  montar($('#nav'), html`${NAV.map((n) => html`<a href="${n.href}" class="${n.nova ? 'nav__nova' : ''}" ${n.ativo.includes(nome) ? bruto('aria-current="page"') : ''}>
-      ${n.nova ? html`<span class="circulo">${icone(n.icone)}</span>` : icone(n.icone)}${n.nova ? html`<span class="rot-curto">${n.curto}</span><span class="rot-longo">${n.rotulo}</span>` : html`<span>${n.rotulo}</span>`}</a>`)}
+  montar($('#nav'), html`${NAV.map((n) => html`<a href="${n.href}" class="${n.nova ? 'nav__nova' : ''} ${n.soDesktop ? 'nav__so-desktop' : ''}" ${n.ativo.includes(nome) ? bruto('aria-current="page"') : ''}>
+      ${n.nova ? html`<span class="circulo">${icone(n.icone)}</span>` : icone(n.icone)}${n.curto ? html`<span class="rot-curto">${n.curto}</span><span class="rot-longo">${n.rotulo}</span>` : html`<span>${n.rotulo}</span>`}</a>`)}
     <div class="nav__extra">
-      <a href="#/saida" ${nome === 'saida' ? bruto('aria-current="page"') : ''}>${icone('saida')} Folha de saída</a>
       <a href="#/distintivos" ${nome === 'distintivos' ? bruto('aria-current="page"') : ''}>${icone('distintivo')} Distintivos</a>
     </div>
     <p class="nav__colofao">Vol. 01 · ${estado.trilhas.length} ${estado.trilhas.length === 1 ? 'folha' : 'folhas'}<br>Dados neste aparelho</p>`);

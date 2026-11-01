@@ -1,7 +1,7 @@
 // Folha de saída: roteiro de segurança para avisar alguém antes da trilha, e checklist de equipamento.
 // Rascunho e checklist ficam salvos no aparelho (funciona sem sinal).
 
-import { html, montar, icone, $, $$, bruto, avisar, copiarTexto } from '../ui.js';
+import { html, montar, icone, $, $$, bruto, avisar, copiarTexto, confirmar } from '../ui.js';
 import * as F from '../formato.js';
 import { CHECKLIST } from '../../dados/checklist.js';
 import { lerMeta, gravarMeta } from '../armazenamento.js';
@@ -46,22 +46,32 @@ export function mensagem(d) {
     + `Se eu não der notícia até ${prazo || '[volta + prazo]'}, tente me ligar; sem resposta, acione os bombeiros (193) e passe este roteiro.${percurso}`;
 }
 
-export async function render({ main, rota }) {
+// Partes da folha de saída, cada uma com rota própria: #/saida, #/saida/mensagem, #/saida/checklist.
+const PARTES = [['roteiro', 'Roteiro', ''], ['mensagem', 'Mensagem', '/mensagem'], ['checklist', 'Checklist', '/checklist']];
+const ESSENCIAIS = [['trilha', 'trilha'], ['partida', 'ponto de partida'], ['data', 'data'], ['saida', 'saída'], ['volta', 'volta prevista'], ['para', 'para quem']];
+export const faltando = (d) => ESSENCIAIS.filter(([k]) => !String(d[k] || '').trim()).map(([, r]) => r);
+
+export async function render({ main, rota, ir }) {
+  const parte = PARTES.some(([k]) => k === rota.params[0]) ? rota.params[0] : 'roteiro';
   const d = { trilha: '', partida: '', data: F.hojeISO(), saida: '', volta: '', para: '', companhia: 'sozinho', quem: '', prazo: '2', gpx: null, voltaAuto: false, ...(await lerMeta('rascunhoSaida', {})) };
   let erroGPX = '';
   const salvar = () => gravarMeta('rascunhoSaida', { ...d }).catch((err) => avisar(err.message, 'erro'));
-  if (rota.query.get('trilha')) d.trilha = rota.query.get('trilha');
+  if (rota.query.get('trilha')) { d.trilha = rota.query.get('trilha'); salvar(); }
   const marcados = new Set(await lerMeta('checklist', []));
   const total = CHECKLIST.reduce((s, g) => s + g.itens.length, 0);
 
   const campo = (k, rotulo, tipo = 'text', extra = '') => html`<div class="campo"><label for="s-${k}">${rotulo}</label><input id="s-${k}" name="${k}" type="${tipo}" value="${d[k]}" ${bruto(extra)}></div>`;
 
-  function desenhar() {
-    montar(main, html`<h1 class="titulo-pagina">Folha de saída</h1>
-    <p class="sutil" style="max-width:68ch">Antes de sair, deixe com alguém o roteiro e a hora de volta. Os campos ficam salvos neste aparelho, mesmo sem sinal.</p>
-    ${blocoGPX()}
-    <div class="trilha-grade">
-      <form id="form-saida" class="grade-campos">
+  function menu() {
+    const falta = faltando(d).length;
+    const estado = { roteiro: falta ? `faltam ${falta}` : 'completo', mensagem: falta ? 'incompleta' : 'pronta', checklist: `${marcados.size} de ${total}` };
+    return html`<nav class="menu-saida" aria-label="Partes da folha de saída">${PARTES.map(([k, r, sufixo], i) => html`<a href="#/saida${sufixo}" ${k === parte ? bruto('aria-current="page"') : ''}>
+      <span class="controle">${i + 1}</span><span class="menu-saida__texto"><span class="menu-saida__nome">${r}</span><span class="menu-saida__estado" id="estado-${k}">${estado[k]}</span></span></a>`)}</nav>`;
+  }
+
+  function roteiro() {
+    return html`${blocoGPX()}
+      <form id="form-saida" class="grade-campos" style="margin-top:var(--e4)">
         ${campo('trilha', 'Trilha')}${campo('partida', 'Ponto de partida')}
         ${campo('data', 'Data', 'date')}${campo('para', 'Para quem (nome)')}
         ${campo('saida', 'Saída', 'time')}
@@ -70,25 +80,41 @@ export async function render({ main, rota }) {
         <div class="campo"><label for="s-prazo">Acionar ajuda após a volta</label><select id="s-prazo" name="prazo">${['1', '2', '3'].map((h) => html`<option value="${h}" ${d.prazo === h ? bruto('selected') : ''}>${h} h depois</option>`)}</select></div>
         ${d.companhia === 'acompanhado' ? html`<div class="campo largo"><label for="s-quem">Com quem</label><input id="s-quem" name="quem" value="${d.quem}"></div>` : ''}
       </form>
-      <div><h2 class="rotulo" style="margin-bottom:var(--e2)">Mensagem</h2>
-        <p class="mensagem" id="mensagem" aria-live="polite">${mensagem(d)}</p>
-        <div class="botoes" style="margin-top:var(--e3)"><button class="botao botao--primario" type="button" id="copiar">${icone('copiar')} Copiar</button><a class="botao" id="whats" href="https://wa.me/?text=${encodeURIComponent(mensagem(d))}" target="_blank" rel="noopener">Enviar pelo WhatsApp</a></div>
-        <p class="nota-dado">O WhatsApp precisa de conexão. Sem sinal, copie e envie por SMS.</p></div>
-    </div>
-    <h2 class="secao-titulo"><span class="controle">✓</span> Checklist · <span id="contagem">${marcados.size} de ${total}</span></h2>
-    <div class="checklist grade-campos" id="checklist">${CHECKLIST.map((g) => html`<fieldset><legend>${g.grupo}</legend>${g.itens.map((i) => html`<label class="caixa"><input type="checkbox" value="${i.id}" ${marcados.has(i.id) ? bruto('checked') : ''}> <span>${i.t}${i.sub ? html` <small>· ${i.sub}</small>` : ''}</span></label>`)}</fieldset>`)}</div>
-    <div class="botoes"><button class="botao botao--texto" type="button" id="zerar">Desmarcar tudo</button></div>`);
+      <div class="form-acoes"><button class="botao botao--texto" type="button" id="limpar-roteiro">Limpar roteiro</button><a class="botao botao--primario" href="#/saida/mensagem">Ver mensagem ${icone('avancar')}</a></div>`;
+  }
+
+  function mensagemParte() {
+    const falta = faltando(d);
+    return html`${falta.length ? html`<p class="pendencias">Ainda falta preencher: ${F.juntar(falta)}. <a href="#/saida">Completar o roteiro</a></p>` : ''}
+      <p class="mensagem" id="mensagem" style="max-height:none">${mensagem(d)}</p>
+      <div class="botoes" style="margin-top:var(--e3)"><button class="botao botao--primario" type="button" id="copiar">${icone('copiar')} Copiar mensagem</button><a class="botao" id="whats" href="https://wa.me/?text=${encodeURIComponent(mensagem(d))}" target="_blank" rel="noopener">Enviar pelo WhatsApp</a></div>
+      <p class="nota-dado">O WhatsApp precisa de conexão. Sem sinal, copie e envie por SMS. Depois de enviar, marque "Folha de saída enviada" no checklist.</p>
+      <div class="form-acoes"><a class="botao" href="#/saida">${icone('voltar')} Roteiro</a><a class="botao botao--primario" href="#/saida/checklist">Checklist ${icone('avancar')}</a></div>`;
+  }
+
+  function checklist() {
+    return html`<p class="sutil" style="margin:0 0 var(--e3)"><strong class="dado" id="contagem" style="color:var(--texto)">${marcados.size} de ${total}</strong> itens conferidos. As marcações ficam salvas até você desmarcar.</p>
+      <div class="checklist grade-campos" id="checklist">${CHECKLIST.map((g) => html`<fieldset><legend>${g.grupo}</legend>${g.itens.map((i) => html`<label class="caixa"><input type="checkbox" value="${i.id}" ${marcados.has(i.id) ? bruto('checked') : ''}> <span>${i.t}${i.sub ? html` <small>· ${i.sub}</small>` : ''}</span></label>`)}</fieldset>`)}</div>
+      <div class="form-acoes"><button class="botao botao--texto" type="button" id="zerar">Desmarcar tudo</button><a class="botao" href="#/saida/mensagem">${icone('voltar')} Mensagem</a></div>`;
+  }
+
+  function desenhar() {
+    const corpo = { roteiro, mensagem: mensagemParte, checklist }[parte];
+    montar(main, html`<h1 class="titulo-pagina">Folha de saída</h1>
+    <p class="sutil" style="max-width:68ch;margin-bottom:var(--e4)">Antes de sair, deixe com alguém o roteiro e a hora de volta. Tudo fica salvo neste aparelho, mesmo sem sinal.</p>
+    ${menu()}
+    <section class="secao" aria-label="${PARTES.find(([k]) => k === parte)[1]}" style="margin-top:var(--e4)">${corpo()}</section>`);
     ligar();
   }
 
   function blocoGPX() {
     const g = d.gpx;
-    return html`<section class="gpx-zona" style="margin:var(--e4) 0" aria-labelledby="h-gpx-saida">
+    return html`<section class="gpx-zona" aria-labelledby="h-gpx-saida">
       <div style="display:flex;justify-content:space-between;gap:var(--e3);flex-wrap:wrap;align-items:baseline"><strong id="h-gpx-saida">Preencher com o GPX da trilha</strong>${g ? html`<button class="botao botao--texto" type="button" id="gpx-limpar">Remover dados do GPX</button>` : ''}</div>
       ${g ? html`<dl class="revisao-lista"><dt>Arquivo</dt><dd>${g.arquivo}</dd><dt>Percurso</dt><dd>${F.km(g.km, 1)} · ${F.subida(g.sub)} · máx. ${F.metros(g.altMax)}${g.tipo ? ` · ${g.tipo}` : ''}</dd>
           <dt>Partida</dt><dd>${g.lat.toFixed(5)}, ${g.lon.toFixed(5)}</dd><dt>Tempo do autor</dt><dd>${F.duracao(g.tempoMin)}</dd></dl>
           <p class="nota-dado" style="margin:0">Distância, subida e coordenadas da partida entram na mensagem, com link de mapa para quem precisar acionar resgate.</p>`
-        : html`<p class="sutil" style="margin:0;font-size:var(--t-s)">Escolha o GPX baixado do Wikiloc: o app preenche trilha, ponto de partida e estima a volta. Os dados ficam só neste aparelho.</p>`}
+        : html`<p class="sutil" style="margin:0;font-size:var(--t-s)">Escolha o GPX baixado do Wikiloc: o app preenche trilha, ponto de partida e estima a volta.</p>`}
       <div class="botoes"><label class="botao ${g ? '' : 'botao--primario'}" for="s-gpx">${icone('importar')} ${g ? 'Trocar arquivo .gpx' : 'Escolher arquivo .gpx'}</label><input id="s-gpx" type="file" class="so-leitor"></div>
       ${erroGPX ? html`<p class="pendencias" role="alert" style="margin:0">${erroGPX}</p>` : ''}
     </section>`;
@@ -114,14 +140,16 @@ export async function render({ main, rota }) {
     $('#s-gpx')?.focus();
   }
 
-  function atualizarMensagem() {
-    const m = mensagem(d);
-    $('#mensagem').textContent = m;
-    $('#whats').href = `https://wa.me/?text=${encodeURIComponent(m)}`;
+  function atualizarEstados() {
+    const falta = faltando(d).length;
+    const r = $('#estado-roteiro'); if (r) r.textContent = falta ? `faltam ${falta}` : 'completo';
+    const m = $('#estado-mensagem'); if (m) m.textContent = falta ? 'incompleta' : 'pronta';
+    const c = $('#estado-checklist'); if (c) c.textContent = `${marcados.size} de ${total}`;
   }
 
   function ligar() {
-    $('#form-saida').addEventListener('input', (e) => {
+    const form = $('#form-saida');
+    form?.addEventListener('input', (e) => {
       const nome = e.target.name;
       d[nome] = e.target.value;
       if (nome === 'volta') d.voltaAuto = false;
@@ -131,19 +159,25 @@ export async function render({ main, rota }) {
       }
       salvar();
       if (nome === 'companhia') { desenhar(); $('#s-companhia').focus(); return; }
-      atualizarMensagem();
+      atualizarEstados();
     });
     // Atualiza a dica da volta estimada só ao concluir a edição da saída (não a cada tecla).
-    $('#form-saida').addEventListener('change', (e) => { if (e.target.name === 'saida' && d.gpx) { desenhar(); $('#s-saida')?.focus(); } });
-    $('#s-gpx').addEventListener('change', (e) => { const a = e.target.files[0]; e.target.value = ''; if (a) aplicarGPX(a); });
+    form?.addEventListener('change', (e) => { if (e.target.name === 'saida' && d.gpx) { desenhar(); $('#s-saida')?.focus(); } });
+    $('#s-gpx')?.addEventListener('change', (e) => { const a = e.target.files[0]; e.target.value = ''; if (a) aplicarGPX(a); });
     $('#gpx-limpar')?.addEventListener('click', () => { d.gpx = null; d.voltaAuto = false; erroGPX = ''; salvar(); desenhar(); });
-    $('#copiar').addEventListener('click', async () => { const ok = await copiarTexto(mensagem(d)); avisar(ok ? 'Mensagem copiada.' : 'Não foi possível copiar.', ok ? 'info' : 'erro'); });
-    $('#checklist').addEventListener('change', (e) => {
+    $('#limpar-roteiro')?.addEventListener('click', async () => {
+      if (!(await confirmar('Limpar o roteiro?', 'Trilha, partida, horários e dados do GPX serão apagados. "Para quem" e o checklist são mantidos.', { confirmar: 'Limpar' }))) return;
+      Object.assign(d, { trilha: '', partida: '', data: F.hojeISO(), saida: '', volta: '', quem: '', gpx: null, voltaAuto: false });
+      salvar(); desenhar();
+    });
+    $('#copiar')?.addEventListener('click', async () => { const ok = await copiarTexto(mensagem(d)); avisar(ok ? 'Mensagem copiada.' : 'Não foi possível copiar.', ok ? 'info' : 'erro'); });
+    $('#checklist')?.addEventListener('change', (e) => {
       if (e.target.checked) marcados.add(e.target.value); else marcados.delete(e.target.value);
       $('#contagem').textContent = `${marcados.size} de ${total}`;
+      atualizarEstados();
       gravarMeta('checklist', [...marcados]).catch((err) => avisar(err.message, 'erro'));
     });
-    $('#zerar').addEventListener('click', () => { marcados.clear(); gravarMeta('checklist', []); $$('#checklist input').forEach((i) => { i.checked = false; }); $('#contagem').textContent = `0 de ${total}`; });
+    $('#zerar')?.addEventListener('click', () => { marcados.clear(); gravarMeta('checklist', []); $$('#checklist input').forEach((i) => { i.checked = false; }); $('#contagem').textContent = `0 de ${total}`; atualizarEstados(); });
   }
 
   desenhar();

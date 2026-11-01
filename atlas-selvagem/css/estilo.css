@@ -72,6 +72,7 @@ p { margin: 0 0 var(--e3); }
 }
 .nav .nav__nova svg { width: 22px; height: 22px; }
 .nav__extra, .nav__colofao { display: none; }
+.nav__so-desktop { display: none !important; }
 .rot-longo { display: none; }
 
 @media (min-width: 1024px) {
@@ -87,6 +88,7 @@ p { margin: 0 0 var(--e3); }
   .nav a[aria-current="page"] svg { color: var(--sobre-destaque); }
   .nav .nav__nova { order: -1; margin: 0 var(--e4) var(--e4); padding: 0 var(--e3); border: var(--borda); }
   .nav .nav__nova span.circulo { width: auto; height: auto; background: none; border: 0; margin: 0; color: inherit; border-radius: 0; }
+  .nav__so-desktop { display: flex !important; }
   .rot-curto { display: none; }
   .rot-longo { display: inline; }
   .nav__extra { display: block; margin-top: var(--e5); padding: var(--e4) var(--e5) 0; border-top: var(--borda-fina); }
@@ -447,3 +449,14 @@ dialog.visor::backdrop { background: rgb(10 10 9 / 0.88); }
   .conteudo { padding: 0; }
 }
 .quadro__abas ~ .mapa-aviso { top: 50px; }
+
+/* ---------- Folha de saída: menu das três partes ---------- */
+.menu-saida { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: var(--borda); }
+.menu-saida a { display: flex; align-items: center; gap: var(--e2); min-height: 56px; padding: var(--e2) var(--e3); text-decoration: none; border-right: var(--borda); color: var(--texto); }
+.menu-saida a:last-child { border-right: 0; }
+.menu-saida a[aria-current="page"] { background: var(--destaque); color: var(--sobre-destaque); }
+.menu-saida a[aria-current="page"] .controle { border-color: var(--sobre-destaque); color: var(--sobre-destaque); }
+.menu-saida__texto { display: grid; gap: 2px; min-width: 0; }
+.menu-saida__nome { font: 600 var(--t-s)/1.1 var(--f-ui); }
+.menu-saida__estado { font: 400 var(--t-xs)/1.2 var(--f-dados); opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 420px) { .menu-saida a { flex-direction: column; align-items: flex-start; gap: 4px; padding: var(--e2); } }

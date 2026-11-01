@@ -223,12 +223,20 @@ await passo('folha de saída monta a mensagem e salva o checklist', async () => 
   await p.fill('#s-para', 'Ana');
   await p.fill('#s-trilha', 'Pico Paraná');
   await p.fill('#s-volta', '18:00');
+  assert.match(await p.locator('#estado-roteiro').innerText(), /faltam 2/); // partida e saída
+  await p.click('.menu-saida a[href="#/saida/mensagem"]');
+  await p.waitForSelector('#mensagem');
   assert.match(await p.locator('#mensagem').innerText(), /Ana, vou fazer a trilha Pico Paraná.*20:00/s);
+  assert.match(await p.locator('.pendencias').innerText(), /ponto de partida e saída/);
+  await p.click('.menu-saida a[href="#/saida/checklist"]');
+  await p.waitForSelector('#checklist');
   await p.locator('#checklist input').first().check();
+  assert.match(await p.locator('#estado-checklist').innerText(), /^1 de/);
   await p.waitForTimeout(300);
   await p.reload();
   await p.waitForSelector('#checklist');
   assert.equal(await p.locator('#checklist input').first().isChecked(), true);
+  await ir('saida');
   assert.equal(await p.inputValue('#s-para'), 'Ana');
 });
 
@@ -243,13 +251,14 @@ await passo('folha de saída preenchida por GPX (trilha, partida, volta e coorde
   assert.equal(await p.inputValue('#s-trilha'), 'Teste');
   assert.equal(await p.inputValue('#s-partida'), 'Portão do parque');
   assert.equal(await p.inputValue('#s-volta'), '06:45'); // 40 min do autor, arredondado
-  assert.match(await p.locator('#mensagem').innerText(), /Coordenadas da partida: -22\.90000, -46\.80000/);
   await p.fill('#s-saida', '07:00');
   await p.locator('#s-saida').dispatchEvent('change');
   assert.equal(await p.inputValue('#s-volta'), '07:45');
   await p.reload();
   await p.waitForSelector('#gpx-limpar');
   assert.equal(await p.inputValue('#s-volta'), '07:45');
+  await ir('saida/mensagem');
+  assert.match(await p.locator('#mensagem').innerText(), /Coordenadas da partida: -22\.90000, -46\.80000/);
 });
 
 await passo('manifesto e service worker ativos', async () => {
@@ -289,7 +298,7 @@ await passo('sem rolagem horizontal em 360 px', async () => {
   await p.setViewportSize({ width: 360, height: 780 });
   await ir('mapa');
   await p.waitForSelector('#mapa-explorar .leaflet-overlay-pane path', { state: 'attached', timeout: 8000 });
-  for (const r of ['atlas', 'lista', 'estatisticas', 'mapa', 'nova', 'arquivo', 'saida', 'distintivos']) {
+  for (const r of ['atlas', 'lista', 'estatisticas', 'mapa', 'nova', 'arquivo', 'saida', 'saida/mensagem', 'saida/checklist', 'distintivos']) {
     await ir(r);
     await p.waitForTimeout(250);
     const largura = await p.evaluate(() => document.documentElement.scrollWidth);
