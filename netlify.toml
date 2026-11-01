@@ -1,6 +1,7 @@
-# Publicação no Netlify a partir do GitHub.
-# Configure o site com "Base directory" = atlas-selvagem; o resto vem daqui.
+# Publicação do Atlas Selvagem no Netlify a partir do GitHub.
+# A configuração fica na raiz do repositório: deixe o campo "Base directory" VAZIO no painel do Netlify.
 [build]
+  base = "atlas-selvagem"
   command = "node scripts/verificar.mjs && node scripts/montar-site.mjs"
   publish = "dist"
 

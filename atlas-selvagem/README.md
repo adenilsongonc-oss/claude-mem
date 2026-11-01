@@ -38,11 +38,11 @@ Não há compilação. `npm run build` roda `scripts/verificar.mjs`, que confere
 
 ### Netlify ligado ao GitHub (recomendado)
 
-O `netlify.toml` já define o build, a pasta `dist/` e os cabeçalhos de cache. No Netlify:
+O `netlify.toml` na raiz do repositório define a pasta do app (`base`), o build, a pasta `dist/` e os cabeçalhos de cache. No Netlify:
 
 1. Abra o site → **Site configuration → Build & deploy → Link repository**. Num site novo, use **Add new site → Import an existing project**.
 2. Escolha o repositório e o branch de publicação.
-3. Em **Base directory**, informe `atlas-selvagem`. O comando e a pasta de publicação vêm do `netlify.toml`.
+3. Deixe **Base directory**, **Build command** e **Publish directory** vazios. Tudo vem do `netlify.toml`.
 
 Depois disso, cada `git push` publica uma versão nova, sem arrastar arquivos.
 
