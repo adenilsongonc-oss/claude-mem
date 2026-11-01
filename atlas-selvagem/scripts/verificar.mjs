@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 const RAIZ = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const PUBLICAVEIS = /\.(html|css|js|json|webmanifest|woff2|png|svg)$/;
-const IGNORAR = /^(docs|testes|scripts|node_modules)\/|^(sw\.js|package\.json)$|\.map$/;
+const IGNORAR = /^(docs|testes|scripts|node_modules|dist)\/|^(sw\.js|package\.json)$|\.map$/;
 
 async function listar(dir) {
   const out = [];

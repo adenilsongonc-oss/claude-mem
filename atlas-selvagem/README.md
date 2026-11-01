@@ -36,6 +36,18 @@ Não há compilação. `npm run build` roda `scripts/verificar.mjs`, que confere
 - todos os `import` relativos resolvem;
 - os JSON e o manifesto são válidos e os ícones existem.
 
+### Netlify ligado ao GitHub (recomendado)
+
+O `netlify.toml` já define o build, a pasta `dist/` e os cabeçalhos de cache. No Netlify:
+
+1. Abra o site → **Site configuration → Build & deploy → Link repository**. Num site novo, use **Add new site → Import an existing project**.
+2. Escolha o repositório e o branch de publicação.
+3. Em **Base directory**, informe `atlas-selvagem`. O comando e a pasta de publicação vêm do `netlify.toml`.
+
+Depois disso, cada `git push` publica uma versão nova, sem arrastar arquivos.
+
+### Publicação manual
+
 Para publicar, copie a pasta (sem `docs/`, `testes/`, `scripts/` e `package.json`) para GitHub Pages, Netlify, Vercel ou outro host estático com HTTPS. Depois de qualquer alteração, **incremente `VERSAO` em `sw.js`**, senão os aparelhos continuam com a versão antiga em cache.
 
 ## Testes

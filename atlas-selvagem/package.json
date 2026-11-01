@@ -10,7 +10,7 @@
     "test": "node --test testes/calculos.teste.mjs testes/gpx.teste.mjs testes/estrutura.teste.mjs",
     "test:e2e": "node testes/e2e.mjs",
     "icones": "node scripts/gerar-icones.mjs",
-    "build": "node scripts/verificar.mjs"
+    "build": "node scripts/verificar.mjs && node scripts/montar-site.mjs"
   },
   "engines": {
     "node": ">=20"

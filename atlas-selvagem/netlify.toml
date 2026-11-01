@@ -1,0 +1,19 @@
+# Publicação no Netlify a partir do GitHub.
+# Configure o site com "Base directory" = atlas-selvagem; o resto vem daqui.
+[build]
+  command = "node scripts/verificar.mjs && node scripts/montar-site.mjs"
+  publish = "dist"
+
+# O service worker e a página precisam ser revalidados sempre, senão o navegador demora a ver versões novas.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache"
