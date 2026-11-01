@@ -4,6 +4,9 @@
   command = "node scripts/verificar.mjs && node scripts/montar-site.mjs"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "22"
+
 # O service worker e a página precisam ser revalidados sempre, senão o navegador demora a ver versões novas.
 [[headers]]
   for = "/sw.js"
